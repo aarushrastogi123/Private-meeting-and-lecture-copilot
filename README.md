@@ -47,8 +47,8 @@ Then open [http://127.0.0.1:8000](http://127.0.0.1:8000). Stop the server with *
 
 ## Privacy and limitations
 
-- The server listens on `127.0.0.1`, so this version is intended for use on the same computer. It is not currently deployed as a public website.
-- Audio is uploaded from the browser to the local server for transcription, stored temporarily for inference, and deleted afterward.
+- The current version listens on `127.0.0.1` and is intended for use on the same computer. It is not currently deployed as a public website.
+- Audio is uploaded from the browser to the app server for transcription, stored temporarily for inference, and deleted afterward. In local use, that server runs on your computer; in a deployed version, it runs on the hosting service.
 - The app does not send audio to a hosted AI service. Internet access is needed for package installation and the first model download.
 - Saved sessions are stored in this browser's `localStorage`. Browser storage is not encrypted and may be accessible to other people using the same browser profile.
 - Recaps and action items are heuristic suggestions. They may miss or misclassify information; verify names, decisions, owners, and dates.
