@@ -6,7 +6,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Annotated
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from starlette.concurrency import run_in_threadpool
 from faster_whisper import WhisperModel
@@ -49,9 +49,9 @@ def get_model() -> WhisperModel:
     return model
 
 
-def transcribe_file(path: str, language: str) -> dict:
+def transcribe_file(path: str) -> dict:
     whisper = get_model()
-    segments, info = whisper.transcribe(path, language=None if language == "auto" else language, beam_size=5, vad_filter=True)
+    segments, info = whisper.transcribe(path, beam_size=5, vad_filter=True)
     transcript_segments = [
         {
             "start": round(segment.start, 2),
@@ -90,13 +90,7 @@ def health() -> dict:
 
 
 @app.post("/api/transcribe")
-async def transcribe(
-    audio: Annotated[UploadFile, File()],
-    language: Annotated[str, Form()] = "auto",
-) -> dict:
-    if language not in {"auto", "hi", "en"}:
-        raise HTTPException(status_code=422, detail="Language must be auto, hi (Hindi), or en (English).")
-
+async def transcribe(audio: Annotated[UploadFile, File()]) -> dict:
     suffix = get_audio_suffix(audio.filename, audio.content_type)
     temporary_path: str | None = None
     size = 0
@@ -114,7 +108,7 @@ async def transcribe(
             raise HTTPException(status_code=400, detail="The selected audio file is empty.")
 
         async with transcription_slot:
-            return await run_in_threadpool(transcribe_file, temporary_path, language)
+            return await run_in_threadpool(transcribe_file, temporary_path)
     except HTTPException:
         raise
     except Exception as error:

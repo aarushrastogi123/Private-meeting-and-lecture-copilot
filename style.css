@@ -123,7 +123,6 @@ h3 { margin: 12px 0 5px; font-size: 1rem; }
 .button-full { width: 100%; margin-top: 10px; }
 
 .inline-status { min-height: 20px; margin: 12px 0 0; color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
-.language-select { margin: -2px 0 10px; }
 .file-picker { display: flex; min-height: 42px; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 9px 12px; overflow: hidden; border: 1px dashed #cbd3e2; border-radius: 9px; background: #fff; color: #59657a; font-size: 0.83rem; font-weight: 500; cursor: pointer; }
 .file-picker:hover { border-color: #8997d2; background: #fafaff; }
 .file-picker span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

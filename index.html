@@ -45,12 +45,6 @@
             <div class="capture-icon capture-icon-alt" aria-hidden="true">↥</div>
             <h3 id="upload-heading">Use a recording</h3>
             <p>Choose an audio file from a lecture or meeting you already recorded.</p>
-            <label class="field-label" for="transcription-language">Audio language</label>
-            <select id="transcription-language" class="language-select">
-              <option value="auto">Auto-detect (may confuse Hindi and Urdu)</option>
-              <option value="hi">Hindi</option>
-              <option value="en">English</option>
-            </select>
             <label class="file-picker" for="audio-file">
               <span id="audio-file-name">Choose an audio file</span>
               <input id="audio-file" type="file" accept="audio/*,.mp3,.m4a,.wav,.webm,.ogg,.flac,.aac" />
@@ -65,6 +59,7 @@
         <textarea id="transcript" rows="10" placeholder="Paste or type a lecture or meeting transcript here…"></textarea>
         <div class="text-actions">
           <p id="status" class="inline-status" role="status" aria-live="polite">Saved sessions stay in this browser. Browser storage is not encrypted.</p>
+          <button id="clear-transcript-button" class="button button-quiet" type="button">Clear transcript</button>
           <button id="summarize-button" class="button button-primary" type="button">Create recap</button>
         </div>
 

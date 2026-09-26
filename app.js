@@ -2,6 +2,7 @@ const transcriptInput = document.querySelector("#transcript");
 const sampleButton = document.querySelector("#sample-button");
 const statusMessage = document.querySelector("#status");
 const summarizeButton = document.querySelector("#summarize-button");
+const clearTranscriptButton = document.querySelector("#clear-transcript-button");
 const recapBox = document.querySelector("#recap");
 const actionItemsBox = document.querySelector("#action-items");
 const searchInput = document.querySelector("#search-input");
@@ -16,7 +17,6 @@ const startRecordingButton = document.querySelector("#start-recording-button");
 const stopRecordingButton = document.querySelector("#stop-recording-button");
 const recordingStatus = document.querySelector("#recording-status");
 const audioFileInput = document.querySelector("#audio-file");
-const transcriptionLanguage = document.querySelector("#transcription-language");
 const audioFileName = document.querySelector("#audio-file-name");
 const transcribeFileButton = document.querySelector("#transcribe-file-button");
 const fileStatus = document.querySelector("#file-status");
@@ -165,7 +165,6 @@ function appendTranscript(text) {
 }
 
 async function transcribeAudio(audioBlob, filename, statusElement, button) {
-  const language = transcriptionLanguage.value;
   if (audioBlob.size > MAX_AUDIO_BYTES) {
     statusElement.textContent = "Audio files must be 100 MB or smaller.";
     return;
@@ -177,7 +176,6 @@ async function transcribeAudio(audioBlob, filename, statusElement, button) {
   try {
     const formData = new FormData();
     formData.append("audio", audioBlob, filename);
-    formData.append("language", language);
 
     const response = await fetch("/api/transcribe", {
       method: "POST",
@@ -190,9 +188,7 @@ async function transcribeAudio(audioBlob, filename, statusElement, button) {
     }
 
     appendTranscript(formatTranscription(result.segments) || result.text || "");
-    const languageNames = { hi: "Hindi", en: "English", ur: "Urdu" };
-    const detectedLanguage = languageNames[result.language] || result.language || "language detected";
-    statusElement.textContent = `Transcription complete · ${detectedLanguage}${language === "auto" ? " (auto-detected)" : " (selected)"}.`;
+    statusElement.textContent = `Transcription complete · ${result.language || "language detected"} (auto-detected).`;
   } catch (error) {
     statusElement.textContent = `Transcription failed: ${error.message}`;
   } finally {
@@ -375,6 +371,16 @@ summarizeButton.addEventListener("click", () => {
   }
   renderAnalysis(analyzeTranscript(transcript));
   statusMessage.textContent = "Recap created. Check suggested action items for accuracy.";
+});
+
+clearTranscriptButton.addEventListener("click", () => {
+  transcriptInput.value = "";
+  searchInput.value = "";
+  showMessage(recapBox, "Your recap will appear here.");
+  showMessage(actionItemsBox, "Possible tasks and deadlines will appear here.");
+  showMessage(searchResultsBox, "Matching lines will appear here.");
+  statusMessage.textContent = "Transcript cleared. Saved sessions were not changed.";
+  transcriptInput.focus();
 });
 
 transcriptInput.addEventListener("input", () => {
