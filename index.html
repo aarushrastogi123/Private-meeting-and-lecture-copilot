@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f6fb" />
+    <meta name="description" content="A local-first assistant for reviewing lectures and meetings." />
+    <title>Recall — Meeting & Lecture Copilot</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="brand-mark" aria-hidden="true">R</div>
+        <div class="hero-copy">
+          <p class="eyebrow">RECALL · PERSONAL NOTES</p>
+          <h1>Stay present.<br /><span>Remember the details.</span></h1>
+          <p class="hero-description">Turn lectures and meetings into notes you can revisit, search, and act on.</p>
+        </div>
+        <div class="privacy-pill"><span class="status-dot"></span> Processed on this computer</div>
+      </header>
+
+      <section class="panel workspace" aria-labelledby="transcript-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">01 / CAPTURE</p>
+            <h2 id="transcript-heading">Start with a conversation</h2>
+          </div>
+          <button id="sample-button" class="button button-quiet" type="button">Load sample</button>
+        </div>
+
+        <div class="capture-grid">
+          <section class="capture-card" aria-labelledby="record-heading">
+            <div class="capture-icon" aria-hidden="true">●</div>
+            <h3 id="record-heading">Record now</h3>
+            <p>Capture audio through your microphone, then transcribe it locally.</p>
+            <div class="button-row">
+              <button id="start-recording-button" class="button button-primary" type="button">Start recording</button>
+              <button id="stop-recording-button" class="button button-secondary" type="button" disabled>Stop &amp; transcribe</button>
+            </div>
+            <p id="recording-status" class="inline-status" role="status" aria-live="polite">Not recording.</p>
+          </section>
+
+          <section class="capture-card" aria-labelledby="upload-heading">
+            <div class="capture-icon capture-icon-alt" aria-hidden="true">↥</div>
+            <h3 id="upload-heading">Use a recording</h3>
+            <p>Choose an audio file from a lecture or meeting you already recorded.</p>
+            <label class="field-label" for="transcription-language">Audio language</label>
+            <select id="transcription-language" class="language-select">
+              <option value="auto">Auto-detect (may confuse Hindi and Urdu)</option>
+              <option value="hi">Hindi</option>
+              <option value="en">English</option>
+            </select>
+            <label class="file-picker" for="audio-file">
+              <span id="audio-file-name">Choose an audio file</span>
+              <input id="audio-file" type="file" accept="audio/*,.mp3,.m4a,.wav,.webm,.ogg,.flac,.aac" />
+            </label>
+            <button id="transcribe-file-button" class="button button-secondary button-full" type="button">Transcribe audio file</button>
+            <p id="file-status" class="inline-status" role="status" aria-live="polite">Audio is processed on this computer.</p>
+          </section>
+        </div>
+
+        <div class="divider-label"><span>OR WORK FROM TEXT</span></div>
+        <label class="field-label" for="transcript">Transcript</label>
+        <textarea id="transcript" rows="10" placeholder="Paste or type a lecture or meeting transcript here…"></textarea>
+        <div class="text-actions">
+          <p id="status" class="inline-status" role="status" aria-live="polite">Saved sessions stay in this browser. Browser storage is not encrypted.</p>
+          <button id="summarize-button" class="button button-primary" type="button">Create recap</button>
+        </div>
+
+        <details class="session-manager">
+          <summary>Save and revisit sessions</summary>
+          <div class="session-fields">
+            <div>
+              <label class="field-label" for="session-title">Session name</label>
+              <input id="session-title" type="text" maxlength="100" placeholder="e.g. Biology lecture — Week 3" />
+            </div>
+            <button id="save-session-button" class="button button-secondary" type="button">Save session</button>
+            <div>
+              <label class="field-label" for="saved-sessions">Saved sessions</label>
+              <select id="saved-sessions"><option value="">Choose a session</option></select>
+            </div>
+            <div class="button-row session-buttons">
+              <button id="open-session-button" class="button button-quiet" type="button">Open</button>
+              <button id="delete-session-button" class="button button-danger" type="button">Delete</button>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="results-grid" aria-label="Transcript insights">
+        <article class="panel result-panel">
+          <p class="eyebrow">02 / RECAP</p>
+          <h2>Key points</h2>
+          <div id="recap" class="result-box"><p>Your recap will appear here.</p></div>
+          <p class="fine-print">A local, extractive recap selected from the transcript. Review it for accuracy.</p>
+        </article>
+        <article class="panel result-panel">
+          <p class="eyebrow">03 / FOLLOW THROUGH</p>
+          <h2>Possible action items</h2>
+          <div id="action-items" class="result-box"><p>Possible tasks and deadlines will appear here.</p></div>
+          <p class="fine-print">Suggested from wording cues; confirm owners and dates.</p>
+        </article>
+      </section>
+
+      <section class="panel search-panel" aria-labelledby="search-heading">
+        <div>
+          <p class="eyebrow">04 / FIND IT AGAIN</p>
+          <h2 id="search-heading">Search the conversation</h2>
+          <p class="section-description">Look for a phrase, decision, person, or deadline.</p>
+        </div>
+        <div class="search-controls">
+          <label class="sr-only" for="search-input">Search transcript</label>
+          <input id="search-input" type="search" placeholder="Try “deadline” or “budget”…" />
+          <button id="search-button" class="button button-secondary" type="button">Search</button>
+        </div>
+        <div id="search-results" class="search-results" aria-live="polite"><p>Matching lines will appear here.</p></div>
+      </section>
+
+      <section class="export-row" aria-labelledby="export-heading">
+        <div>
+          <p class="eyebrow">KEEP A COPY</p>
+          <h2 id="export-heading">Take your notes with you</h2>
+          <p class="section-description">Export a plain-text copy of the recap, action items, and transcript.</p>
+        </div>
+        <button id="download-notes-button" class="button button-primary" type="button">Download notes</button>
+      </section>
+
+      <footer class="page-footer">
+        <p>Recall runs transcription locally with Whisper. Audio is temporarily processed and deleted; transcripts are saved only when you choose to save a session.</p>
+      </footer>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
